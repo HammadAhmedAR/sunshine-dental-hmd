@@ -1,4 +1,4 @@
-﻿# Sunrise Dental Clinic
+# Sunrise Dental Clinic
 
 Original CIS6003 Advanced Programming project. Phase 2 implements staff authentication, a dashboard, database-backed clinic reference data and transactional appointment registration. Phase 1 history remains intact. No code was copied from the reference project.
 
@@ -105,3 +105,6 @@ Not implemented: appointment search/details, billing, reports, help content, den
 - [Manual isolated-runtime verification instructions](scripts/README.md)
 
 The current checkout has no Git remote. Phase 2 commits are local and have not been pushed. The existing repository URL is required before origin can be configured. Phase 1's report is preserved as a historical record of that implementation session; it does not describe the current Phase 2 scope.
+
+# sunshine-dental-hmd
+JEE Application 
