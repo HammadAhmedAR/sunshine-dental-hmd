@@ -66,3 +66,9 @@ Remaining checks are the actual user's deployment/migration, HTTPS/secure-cookie
 ## Revised Phase 2 request: additional test-first checkpoint
 
 Existing double-booking RED/GREEN evidence remains intact in commit 38df028 and its subsequent implementation; it was not recreated. Before adding blank-password validation, the new targeted command `mvn -B "-Dtest=AuthServiceTest#blankPasswordRejectedBeforeDao" test` ran four cases with two genuine failures: whitespace-only passwords reached UserDAO. Null and empty inputs already passed. Output is preserved in `evidence/phase-2-blank-password-red.txt`. This checkpoint adds a previously missing validation rule rather than removing an implemented rule to manufacture a failure.
+
+## Revised Phase 2: final results
+
+The blank-password fix passed all four targeted cases, with the seven new reference tests also passing in the same run (11 total). Final `mvn -B clean test` and `mvn -B clean package` each passed 71 executions, zero failures/errors/skips. Current logs are `phase-2-revision-clean-test.txt` and `phase-2-revision-clean-package.txt`. The latest additions are eight blank-credential cases, seven reference-generator checks and one DAO/time-zone binding check (16 new executions).
+
+Migration 003 was applied to the isolated PostgreSQL fixture. A real registration saved APT-2026-00007 and existing SDC references remained intact; the outputs are in `phase-2-reference-migration.txt` and `phase-2-reference-check.txt`. Earlier 55-test and HTTP/browser logs remain historical, not re-labelled as results of this revision. The current completion record is [phase-2-report.md](phase-2-report.md).

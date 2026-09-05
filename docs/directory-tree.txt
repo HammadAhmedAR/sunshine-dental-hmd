@@ -3,27 +3,37 @@
     database/
         migrations/
             002_patient_address_and_booking_guard.sql
+            003_appointment_reference_format.sql
         schema.sql
         seed.sql
     docs/
         directory-tree.txt
         evidence/
+            phase-2-blank-password-red.txt
             phase-2-clean-package.txt
             phase-2-clean-test.txt
             phase-2-database-check.txt
             phase-2-http-smoke.txt
             phase-2-migration-check.txt
+            phase-2-reference-check.txt
+            phase-2-reference-migration.txt
+            phase-2-revision-clean-package.txt
+            phase-2-revision-clean-test.txt
+            phase-2-revision-green.txt
             phase-2-tdd-green.txt
             phase-2-tdd-red.txt
         phase-1-report.md
         phase-2-changes.txt
         phase-2-development.md
+        phase-2-report.md
         test-plan.md
+    LICENSE
     pom.xml
     README.md
     scripts/
         Phase2DatabaseCheck.java
         phase2-http-smoke.ps1
+        Phase2ReferenceCheck.java
         README.md
     src/
         main/
@@ -83,6 +93,7 @@
                                 TreatmentService.java
                                 ValidationException.java
                             util/
+                                AppointmentNumberGenerator.java
                                 ConnectionProvider.java
                                 Csrf.java
                                 DBConnection.java
@@ -127,7 +138,7 @@
                             controller/
                                 SessionServletTest.java
                             dao/
-                                .gitkeep
+                                JdbcAppointmentDAOTest.java
                             filter/
                                 AuthenticationFilterTest.java
                             service/
@@ -135,7 +146,9 @@
                                 AuthServiceTest.java
                                 DashboardServiceTest.java
                                 PatientServiceTest.java
+                            util/
+                                AppointmentNumberGeneratorTest.java
 
 Generated WAR: target/sunrise-dental-clinic.war
 Generated test reports: target/surefire-reports/
-Excluded: generated target/, ignored local .runtime/ fixture and .git/ internals.
+Excluded: target/, ignored .runtime/ fixture, and .git/ internals.

@@ -1,6 +1,6 @@
 # Isolated Phase 2 runtime checks
 
-These are explicit manual integration checks, separate from the 55 JUnit tests. They create fictional rows. Never run them against real clinic data.
+These are explicit manual integration checks, separate from the 71 JUnit tests. They create fictional rows. Never run them against real clinic data.
 
 The observed fixture used PostgreSQL 15 on `127.0.0.1:55432`, database `sunrise_dental_clinic`, and GlassFish 7.1.0 HTTP port `19080`, admin port `19048`, context `/sunrise-dental-clinic`. Runtime files and generated credentials are stored in ignored `.runtime/`. The normal PostgreSQL server and GlassFish domain are unaffected.
 
@@ -20,3 +20,6 @@ The Java check requires the preceding HTTP fixture. It tests rollback after both
 Saved observed output is under `docs/evidence/`. Windows PowerShell 5 renders some native stderr warnings as NativeCommandError records; Maven BUILD SUCCESS/exit status and the explicit PASS/FAIL assertions determine the result. The deliberate TDD red output must not be confused with final build results.
 
 The migration check used a separate database built from Phase 1 commit 343704c's schema, inserted one fictional legacy patient, applied migration 002, verified that no address was invented, rejected a new missing address, then backfilled and validated the checks. This was an observed manual database check rather than a JUnit test.
+
+
+The latest reference migration has a separate fixture check: after applying migration 003 to the retained isolated fixture, run Phase2ReferenceCheck.java with the same classpath and external configuration. It creates one fictional future appointment and checks that older SDC references remain intact. Its observed output is phase-2-reference-check.txt. Do not rerun at the same date/time without a fresh fixture.
