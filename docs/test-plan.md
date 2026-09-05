@@ -32,3 +32,10 @@ Surefire regenerates machine-readable XML and a text report under `target/surefi
 | Inspect desktop and mobile widths, keyboard navigation | Readable layout, visible focus, no broken navigation | Not run |
 
 Later milestones should add service tests with fake DAOs, transactional database integration checks, authentication tests, collision/overlap tests and billing boundary cases. No service or DAO functionality exists yet, so their test folders are placeholders.
+
+## Phase 2: genuine test-first checkpoint
+
+The appointment registration scaffold was built with transaction handling and input validation before its conflict rule. A test stubbed the DAO to report an occupied dentist slot and expected ValidationException.
+
+Command: `mvn -B "-Dtest=AppointmentServiceTest#rejectsDoubleBooking" test`.
+Observed on 2026-09-05: 1 test, 1 assertion failure, 0 errors. The failure was: "Expected com.sunrise.clinic.service.ValidationException to be thrown, but nothing was thrown." Full unedited command output is retained in `docs/evidence/phase-2-tdd-red.txt`. This checkpoint intentionally fails that test; it is not a deployable milestone.
