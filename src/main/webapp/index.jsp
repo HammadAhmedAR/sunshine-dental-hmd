@@ -21,16 +21,16 @@
                     <p class="lead">Sunrise Dental Clinic</p>
                     <p class="subtitle">Appointment &amp; Patient Management System</p>
                     <p class="intro">A dedicated workspace for your clinic team, designed to bring patient visits and everyday administration together.</p>
-                    <a class="button button-primary" href="#staff-access">Staff sign-in <span aria-hidden="true">&#8599;</span></a>
+                    <a class="button button-primary" href="login">Staff sign-in <span aria-hidden="true">&#8599;</span></a>
                     <div class="care-note"><span class="sun-mark" aria-hidden="true">&#9728;</span> Thoughtful care. Organised days.</div>
                 </div>
                 <section class="card access-card" id="staff-access" aria-labelledby="access-title">
                     <div class="access-icon" aria-hidden="true">S<span>+</span></div>
-                    <span class="badge">PROJECT FOUNDATION</span>
+                    <span class="badge">STAFF WORKSPACE</span>
                     <h2 id="access-title">Your clinic workspace</h2>
-                    <p>Staff access will be available in the authentication milestone.</p>
-                    <div class="message message-info">Phase 1 establishes the application structure. Sign-in is not available yet.</div>
-                    <button class="button button-primary" type="button" disabled>Sign-in coming soon</button>
+                    <p>Sign in to plan patient visits with your clinic team.</p>
+                    <div class="message message-info">Manage appointments using the clinic's active dentists and treatments.</div>
+                    <a class="button button-primary" href="login">Staff sign-in</a>
                     <p class="access-footnote">For authorised Sunrise Dental Clinic staff.</p>
                 </section>
             </section>
@@ -46,3 +46,4 @@
 </div>
 </body>
 </html>
+

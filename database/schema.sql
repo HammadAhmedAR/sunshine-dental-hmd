@@ -18,7 +18,8 @@ CREATE TABLE users (
 CREATE TABLE patients (
     patient_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     full_name VARCHAR(120) NOT NULL CHECK (btrim(full_name) <> ''),
-    phone VARCHAR(16) NOT NULL CHECK (phone ~ '^\+?[0-9]{9,15}$'),
+    address VARCHAR(300) NOT NULL CONSTRAINT patients_address_required CHECK (char_length(btrim(address)) BETWEEN 3 AND 300),
+    phone VARCHAR(16) NOT NULL CONSTRAINT patients_sri_lankan_phone CHECK (phone ~ '^(0|\+94)[1-9][0-9]{8}$'),
     email VARCHAR(254) CHECK (email IS NULL OR btrim(email) <> ''),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -63,6 +64,8 @@ CREATE INDEX idx_appointments_patient ON appointments(patient_id);
 CREATE INDEX idx_appointments_dentist_time ON appointments(dentist_id, starts_at);
 CREATE INDEX idx_appointments_treatment ON appointments(treatment_id);
 CREATE INDEX idx_appointments_creator ON appointments(created_by);
+CREATE UNIQUE INDEX uq_appointments_dentist_start
+    ON appointments(dentist_id, starts_at) WHERE status IN ('BOOKED', 'COMPLETED');
 
 CREATE TABLE bills (
     bill_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

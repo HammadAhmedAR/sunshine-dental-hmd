@@ -1,16 +1,26 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <aside class="sidebar" aria-label="Clinic navigation">
-    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S+</span><span>sunrise<small>DENTAL CLINIC</small></span></a>
+    <a class="brand" href="${pageContext.request.contextPath}/"><span class="brand-mark" aria-hidden="true">S+</span><span>sunrise<small>DENTAL CLINIC</small></span></a>
     <p class="nav-label">WORKSPACE</p>
     <nav>
-        <a class="nav-item active" href="./" aria-current="page">Welcome <span aria-hidden="true">&#8599;</span></a>
-        <span class="nav-item" aria-disabled="true">Dashboard</span>
-        <span class="nav-item" aria-disabled="true">Appointments</span>
-        <span class="nav-item" aria-disabled="true">New Appointment</span>
+        <c:choose>
+            <c:when test="${not empty sessionScope.loggedUser}">
+                <a class="nav-item ${activePage == 'dashboard' ? 'active' : ''}" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
+                <span class="nav-item" aria-disabled="true">Appointments</span>
+                <a class="nav-item ${activePage == 'new' ? 'active' : ''}" href="${pageContext.request.contextPath}/appointments/new">New Appointment</a>
+            </c:when>
+            <c:otherwise><a class="nav-item active" href="${pageContext.request.contextPath}/login">Staff sign-in</a></c:otherwise>
+        </c:choose>
         <span class="nav-item" aria-disabled="true">Billing</span>
         <span class="nav-item" aria-disabled="true">Reports</span>
         <span class="nav-item" aria-disabled="true">Help</span>
-        <span class="nav-item" aria-disabled="true">Logout</span>
+        <c:if test="${not empty sessionScope.loggedUser}">
+            <form method="post" action="${pageContext.request.contextPath}/logout">
+                <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+                <button class="nav-item logout-button" type="submit">Logout</button>
+            </form>
+        </c:if>
     </nav>
-    <div class="sidebar-note"><span class="status-dot" aria-hidden="true"></span> Phase 1 foundation<small>Workspace modules coming soon</small></div>
+    <div class="sidebar-note"><span class="status-dot" aria-hidden="true"></span> Sunrise staff workspace<small>Thoughtful care. Organised days.</small></div>
 </aside>

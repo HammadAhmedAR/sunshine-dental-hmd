@@ -1,1 +1,2 @@
-<header class="topbar"><span>Clinic administration <span class="header-divider">/</span> <strong>Welcome</strong></span><span class="staff-label">Staff portal <span class="avatar" aria-hidden="true">SC</span></span></header>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<header class="topbar"><span>Clinic administration <span class="header-divider">/</span> <strong><c:out value="${empty pageTitle ? 'Welcome' : pageTitle}"/></strong></span><span class="staff-label"><c:out value="${empty sessionScope.loggedUser ? 'Staff portal' : sessionScope.loggedUser.fullName}"/> <span class="avatar" aria-hidden="true">SC</span></span></header>

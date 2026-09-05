@@ -1,7 +1,7 @@
 package com.sunrise.clinic.config;
 
-import com.sunrise.clinic.dao.JdbcUserDAO;
-import com.sunrise.clinic.service.AuthService;
+import com.sunrise.clinic.dao.*;
+import com.sunrise.clinic.service.*;
 import com.sunrise.clinic.util.*;
 import jakarta.servlet.ServletContext;
 import java.sql.SQLException;
@@ -18,6 +18,12 @@ public final class Services {
     private final AuthService auth = new AuthService(new JdbcUserDAO(connections), new PasswordHasher());
     public AuthService auth() { return auth; }
     public ConnectionProvider connections() { return connections; }
+    public PatientService patients() { return new PatientService(connections, new JdbcPatientDAO()); }
+    public DentistService dentists() { return new DentistService(connections, new JdbcDentistDAO()); }
+    public TreatmentService treatments() { return new TreatmentService(connections, new JdbcTreatmentDAO()); }
+    public DashboardService dashboard() {
+        return new DashboardService(connections, new DashboardDAO(), java.time.Clock.systemUTC());
+    }
 
     public static Services get(ServletContext context) {
         synchronized (context) {
