@@ -39,3 +39,26 @@ The appointment registration scaffold was built with transaction handling and in
 
 Command: `mvn -B "-Dtest=AppointmentServiceTest#rejectsDoubleBooking" test`.
 Observed on 2026-09-05: 1 test, 1 assertion failure, 0 errors. The failure was: "Expected com.sunrise.clinic.service.ValidationException to be thrown, but nothing was thrown." Full unedited command output is retained in `docs/evidence/phase-2-tdd-red.txt`. This checkpoint intentionally fails that test; it is not a deployable milestone.
+
+## Phase 2 final automated and runtime results
+
+The conflict decision was implemented after the red checkpoint. The identical targeted test passed: 1 execution, 0 failures/errors/skips. See `docs/evidence/phase-2-tdd-green.txt`. No test was weakened to obtain the green result.
+
+Final clean builds both passed: `mvn -B clean test` and `mvn -B clean package`. There are 55 JUnit executions in seven classes: DatabaseConfigTest 9, AuthServiceTest 6, PatientServiceTest 12, DashboardServiceTest 1, AppointmentServiceTest 19, AuthenticationFilterTest 6 and SessionServletTest 2. This adds 46 executions to Phase 1. No getter/setter tests were added.
+
+Appointment coverage includes valid creation, past dates, missing/invalid patient details, missing dentist/treatment/date/time, invalid calendar dates, inactive references, existing-patient reuse, unknown patient, double booking, failure of either insert, rollback, database uniqueness-race translation, staff identity and minute precision. Dashboard testing fixes Clock at a UTC instant on the next Sri Lankan day. Security tests cover credential outcomes, UTF-8 password bounds, malformed hashes, access filtering, CSRF, session replacement and logout.
+
+The 55 tests run without GlassFish or PostgreSQL using constructor-injected mocks and a fixed Clock. Raw final Maven outputs are `phase-2-clean-test.txt` and `phase-2-clean-package.txt` under docs/evidence.
+
+Separate observed runtime verification used isolated PostgreSQL 15 and GlassFish 7.1.0, with no changes to the user's existing domain/database:
+
+| Evidence | Result |
+| --- | --- |
+| phase-2-http-smoke.txt | 19 passing HTTP assertions |
+| phase-2-database-check.txt | 9 passing database/concurrency/rollback assertions |
+| phase-2-migration-check.txt | Legacy preservation, new address constraint and backfill validation passed |
+| Browser inspection | Login, dashboard, existing-patient behaviour, mobile form at 390x844 and logout inspected |
+
+These counts are separate from JUnit, and the runtime fixture is reproducible using scripts/README.md. A runtime JDBC driver-loading issue was found and fixed before the final checks. Screenshots were viewed during browser inspection, but no image files have been added; the Phase 2 evidence document retains explicit capture placeholders. Phase 1's earlier 'not run' table above is historical; it is not the current Phase 2 status.
+
+Remaining checks are the actual user's deployment/migration, HTTPS/secure-cookie configuration, full idle timeout, broader browser/accessibility/load verification and assessment screenshot capture. There is no final assignment report or UML in this milestone.

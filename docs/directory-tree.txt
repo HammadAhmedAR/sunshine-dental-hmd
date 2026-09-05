@@ -1,14 +1,30 @@
 ﻿sunrise-dental-clinic/
     .gitignore
     database/
+        migrations/
+            002_patient_address_and_booking_guard.sql
         schema.sql
         seed.sql
     docs/
         directory-tree.txt
+        evidence/
+            phase-2-clean-package.txt
+            phase-2-clean-test.txt
+            phase-2-database-check.txt
+            phase-2-http-smoke.txt
+            phase-2-migration-check.txt
+            phase-2-tdd-green.txt
+            phase-2-tdd-red.txt
         phase-1-report.md
+        phase-2-changes.txt
+        phase-2-development.md
         test-plan.md
     pom.xml
     README.md
+    scripts/
+        Phase2DatabaseCheck.java
+        phase2-http-smoke.ps1
+        README.md
     src/
         main/
             java/
@@ -18,23 +34,60 @@
                             config/
                                 DatabaseConfig.java
                                 package-info.java
+                                Services.java
+                                SessionConfiguration.java
                             controller/
+                                AddAppointmentServlet.java
+                                DashboardServlet.java
+                                LoginServlet.java
+                                LogoutServlet.java
                                 package-info.java
                             dao/
+                                AppointmentDAO.java
+                                BookingConflictException.java
+                                DashboardDAO.java
+                                DentistDAO.java
+                                JdbcAppointmentDAO.java
+                                JdbcDentistDAO.java
+                                JdbcPatientDAO.java
+                                JdbcTreatmentDAO.java
+                                JdbcUserDAO.java
                                 package-info.java
+                                PatientDAO.java
+                                TreatmentDAO.java
+                                UserDAO.java
                             filter/
+                                AuthenticationFilter.java
                                 package-info.java
                             model/
+                                Appointment.java
+                                AppointmentRequest.java
+                                DashboardStats.java
+                                Dentist.java
                                 package-info.java
+                                Patient.java
+                                PatientDraft.java
+                                Treatment.java
+                                User.java
                             rest/
                                 HealthResource.java
                                 package-info.java
                                 RestApplication.java
                             service/
+                                AppointmentService.java
+                                AuthService.java
+                                DashboardService.java
+                                DentistService.java
                                 package-info.java
+                                PatientService.java
+                                TreatmentService.java
+                                ValidationException.java
                             util/
+                                ConnectionProvider.java
+                                Csrf.java
                                 DBConnection.java
                                 package-info.java
+                                PasswordHasher.java
                                 TestConnection.java
             resources/
                 db.properties.example
@@ -44,18 +97,18 @@
                         app.css
                         auth.css
                     js/
-                        .gitkeep
+                        appointment.js
                 index.jsp
                 WEB-INF/
                     views/
                         appointments/
-                            .gitkeep
+                            add-appointment.jsp
                         auth/
-                            .gitkeep
+                            login.jsp
                         billing/
                             .gitkeep
                         dashboard/
-                            .gitkeep
+                            dashboard.jsp
                         fragments/
                             sidebar.jspf
                             topbar.jspf
@@ -63,6 +116,7 @@
                             .gitkeep
                         reports/
                             .gitkeep
+                    web.xml
         test/
             java/
                 com/
@@ -70,11 +124,18 @@
                         clinic/
                             config/
                                 DatabaseConfigTest.java
+                            controller/
+                                SessionServletTest.java
                             dao/
                                 .gitkeep
+                            filter/
+                                AuthenticationFilterTest.java
                             service/
-                                .gitkeep
+                                AppointmentServiceTest.java
+                                AuthServiceTest.java
+                                DashboardServiceTest.java
+                                PatientServiceTest.java
 
-Generated output: target/sunrise-dental-clinic.war
+Generated WAR: target/sunrise-dental-clinic.war
 Generated test reports: target/surefire-reports/
-Build output and .git internals excluded from the source tree above.
+Excluded: generated target/, ignored local .runtime/ fixture and .git/ internals.
