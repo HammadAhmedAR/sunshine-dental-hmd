@@ -1,13 +1,10 @@
 package com.sunrise.clinic.config;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.util.Properties;
 
-/** Immutable configuration. Credentials are read from an external UTF-8 file. */
+/** Immutable configuration. Credentials are read from db.properties on the classpath. */
 public final class DatabaseConfig {
     private final String url;
     private final String username;
@@ -20,16 +17,22 @@ public final class DatabaseConfig {
     }
 
     public static DatabaseConfig load() throws IOException {
-        String file = System.getProperty("sunrise.db.config");
-        if (file == null || file.isBlank()) {
-            file = System.getenv("SUNRISE_DB_CONFIG");
-        }
-        if (file == null || file.isBlank()) {
-            throw new IllegalStateException("Set SUNRISE_DB_CONFIG or -Dsunrise.db.config to an external db.properties file.");
+        return load(DatabaseConfig.class.getClassLoader());
+    }
+
+    // Package-visible for isolated resource-loading tests; production uses this class's loader.
+    static DatabaseConfig load(ClassLoader classLoader) throws IOException {
+        InputStream stream = classLoader != null
+                ? classLoader.getResourceAsStream("db.properties")
+                : DatabaseConfig.class.getResourceAsStream("/db.properties");
+        if (stream == null) {
+            throw new IllegalStateException("Database configuration file not found: db.properties");
         }
         Properties properties = new Properties();
-        try (Reader reader = Files.newBufferedReader(Path.of(file), StandardCharsets.UTF_8)) {
-            properties.load(reader);
+        try (InputStream in = stream) {
+            properties.load(in);
+        } catch (IOException exception) {
+            throw new IOException("Failed to read database configuration: db.properties", exception);
         }
         return fromProperties(properties);
     }
@@ -41,7 +44,7 @@ public final class DatabaseConfig {
         if (!url.startsWith("jdbc:postgresql://")) {
             throw new IllegalArgumentException("db.url must be a PostgreSQL JDBC URL.");
         }
-        if (password.trim().equals("change_me")) {
+        if (password.trim().equals("change_me") || password.trim().equals("REPLACE_WITH_LOCAL_POSTGRES_PASSWORD")) {
             throw new IllegalArgumentException("Replace the example db.password before connecting.");
         }
         return new DatabaseConfig(url, username, password);

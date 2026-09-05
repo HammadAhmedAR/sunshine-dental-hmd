@@ -12,7 +12,7 @@ public final class Services {
         try {
             return new DBConnection(DatabaseConfig.load()).getConnection();
         } catch (java.io.IOException | IllegalArgumentException | IllegalStateException exception) {
-            throw new SQLException("Database configuration is unavailable.", "08001");
+            throw new SQLException("Database configuration is unavailable.", "08001", exception);
         }
     };
     private final AuthService auth = new AuthService(new JdbcUserDAO(connections), new PasswordHasher());

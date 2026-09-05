@@ -37,6 +37,14 @@ public class LoginServlet extends HttpServlet {
             req.setAttribute("error", "The username or password is incorrect.");
         } catch (SQLException exception) {
             getServletContext().log("Login database failure; SQL state: " + exception.getSQLState());
+            Throwable cause = exception.getCause();
+            if (cause != null) {
+                // Log only a known configuration reason, never arbitrary JDBC messages or credentials.
+                String reason = "Replace the example db.password before connecting.".equals(cause.getMessage())
+                        ? "Example database password must be replaced in the deployed configuration."
+                        : "Inspect the deployed database configuration and server connection settings.";
+                getServletContext().log("Login failure cause: " + cause.getClass().getName() + "; " + reason);
+            }
             res.setStatus(503);
             req.setAttribute("error", "Sign-in is temporarily unavailable. Please try again shortly.");
         }
