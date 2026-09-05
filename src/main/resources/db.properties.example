@@ -1,0 +1,5 @@
+# Copy to an external db.properties and set SUNRISE_DB_CONFIG to its absolute path.
+# Local db.properties files are ignored by Git and excluded from the WAR.
+db.url=jdbc:postgresql://localhost:5432/sunrise_dental_clinic
+db.username=postgres
+db.password=change_me
