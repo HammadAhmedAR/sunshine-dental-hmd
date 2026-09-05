@@ -5,7 +5,6 @@ import com.sunrise.clinic.model.*;
 import com.sunrise.clinic.util.ConnectionProvider;
 import java.sql.*;
 import java.time.*;
-import java.time.format.DateTimeParseException;
 
 public final class AppointmentService {
     private final ConnectionProvider connections;
@@ -29,14 +28,14 @@ public final class AppointmentService {
 
     public Appointment register(AppointmentRequest request, long userId) throws SQLException {
         if (request == null) throw new ValidationException("Patient and appointment details are required.");
-        long dentistId = requiredId(request.dentistId(), "Select an active dentist.");
-        long treatmentId = requiredId(request.treatmentId(), "Select an active treatment.");
+        long dentistId = AppointmentValidation.requiredId(request.dentistId(), "Select an active dentist.");
+        long treatmentId = AppointmentValidation.requiredId(request.treatmentId(), "Select an active treatment.");
         Long existingId = request.existingPatientId() == null || request.existingPatientId().isBlank()
-                ? null : requiredId(request.existingPatientId(), "Select a valid patient.");
+                ? null : AppointmentValidation.requiredId(request.existingPatientId(), "Select a valid patient.");
         PatientDraft newPatient = existingId == null ? patientService.validate(request.patient()) : null;
-        Instant start = parseStart(request.date(), request.time());
+        Instant start = AppointmentValidation.start(request.date(), request.time());
         if (userId <= 0) throw new ValidationException("A signed-in staff member is required.");
-        rejectPast(start);
+        AppointmentValidation.notPast(start, clock);
 
         try (Connection connection = connections.getConnection()) {
             connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
@@ -48,7 +47,7 @@ public final class AppointmentService {
                 Treatment treatment = treatments.findActiveById(connection, treatmentId)
                         .orElseThrow(() -> new ValidationException("The selected treatment is unavailable."));
                 Instant end = start.plusSeconds(treatment.durationMinutes() * 60L);
-                rejectPast(start); // Recheck after waiting for the dentist lock.
+                AppointmentValidation.notPast(start, clock); // Recheck after waiting for the dentist lock.
                 if (appointments.hasOverlap(connection, dentistId, start, end)) {
                     throw new ValidationException("This dentist already has an appointment during that time. Choose another slot.");
                 }
@@ -79,31 +78,4 @@ public final class AppointmentService {
         }
     }
 
-    private long requiredId(String text, String message) {
-        try {
-            long id = Long.parseLong(text == null ? "" : text);
-            if (id > 0) return id;
-        } catch (NumberFormatException ignored) { }
-        throw new ValidationException(message);
-    }
-
-    private Instant parseStart(String date, String time) {
-        if (date == null || date.isBlank()) throw new ValidationException("Appointment date is required.");
-        if (time == null || time.isBlank()) throw new ValidationException("Appointment time is required.");
-        try {
-            LocalDate parsedDate = LocalDate.parse(date);
-            LocalTime parsedTime = LocalTime.parse(time);
-            if (parsedTime.getSecond() != 0 || parsedTime.getNano() != 0
-                    || parsedDate.getYear() < 2000 || parsedDate.getYear() > 9999) {
-                throw new ValidationException("Enter a valid date and a time in whole minutes.");
-            }
-            return LocalDateTime.of(parsedDate, parsedTime).atZone(DashboardService.CLINIC_ZONE).toInstant();
-        } catch (DateTimeParseException exception) {
-            throw new ValidationException("Enter a valid appointment date and time.");
-        }
-    }
-
-    private void rejectPast(Instant start) {
-        if (start.isBefore(clock.instant())) throw new ValidationException("Appointments cannot be booked in the past.");
-    }
 }

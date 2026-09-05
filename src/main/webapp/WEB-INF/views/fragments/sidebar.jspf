@@ -7,7 +7,7 @@
         <c:choose>
             <c:when test="${not empty sessionScope.loggedUser}">
                 <a class="nav-item ${activePage == 'dashboard' ? 'active' : ''}" href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
-                <span class="nav-item" aria-disabled="true">Appointments</span>
+                <a class="nav-item ${activePage == 'appointments' ? 'active' : ''}" href="${pageContext.request.contextPath}/appointments">Appointments</a>
                 <a class="nav-item ${activePage == 'new' ? 'active' : ''}" href="${pageContext.request.contextPath}/appointments/new">New Appointment</a>
             </c:when>
             <c:otherwise><a class="nav-item active" href="${pageContext.request.contextPath}/login">Staff sign-in</a></c:otherwise>

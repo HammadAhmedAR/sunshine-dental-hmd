@@ -28,6 +28,13 @@ public final class Services {
         return new AppointmentService(connections, new JdbcPatientDAO(), new JdbcDentistDAO(),
                 new JdbcTreatmentDAO(), new JdbcAppointmentDAO(), patients(), java.time.Clock.systemUTC());
     }
+    public AppointmentQueryService appointmentQueries() {
+        return new AppointmentQueryService(connections, new JdbcAppointmentDAO());
+    }
+    public AppointmentManagementService appointmentManagement() {
+        return new AppointmentManagementService(connections, new JdbcAppointmentDAO(), new JdbcDentistDAO(),
+                new JdbcTreatmentDAO(), java.time.Clock.systemUTC());
+    }
 
     public static Services get(ServletContext context) {
         synchronized (context) {

@@ -21,3 +21,16 @@
 .form-actions { display: flex; gap: 20px; align-items: center; margin-top: 25px; }
 .content > .message { margin: 20px 0; }
 @media (max-width: 760px) { .stats-grid, .form-grid { grid-template-columns: 1fr; } .action-panel { align-items: flex-start; flex-direction: column; } }
+/* Shared management views */
+.content > .card { margin: 24px 0; }
+.search-row, .filter-row, .section-heading { display: flex; align-items: end; gap: 20px; flex-wrap: wrap; }
+.search-row .form-group { flex: 1; min-width: 210px; }
+.search-row .form-group, .filter-row .form-group { margin-bottom: 0; }
+.filter-row { margin-top: 20px; }
+.section-heading { justify-content: space-between; align-items: center; }
+.details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+dt { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+dd { margin: 0; overflow-wrap: anywhere; }
+caption { text-align: left; font-weight: 600; margin-bottom: 18px; }
+.pagination { display: flex; gap: 24px; margin-top: 24px; }
+@media(max-width:760px) { .details-grid { grid-template-columns: 1fr; } .filter-row > .form-group { width: 100%; } }
