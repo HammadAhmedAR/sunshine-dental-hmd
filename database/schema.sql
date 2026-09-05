@@ -45,8 +45,7 @@ CREATE SEQUENCE appointment_reference_seq;
 CREATE TABLE appointments (
     appointment_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     appointment_number VARCHAR(32) NOT NULL UNIQUE
-        DEFAULT ('SDC-' || nextval('appointment_reference_seq')::TEXT)
-        CHECK (appointment_number ~ '^SDC-[0-9]+$'),
+        CHECK (appointment_number ~ '^(SDC-[0-9]+|APT-[0-9]{4}-[0-9]{5,})$'),
     patient_id BIGINT NOT NULL REFERENCES patients(patient_id),
     dentist_id BIGINT NOT NULL REFERENCES dentists(dentist_id),
     treatment_id BIGINT NOT NULL REFERENCES treatments(treatment_id),

@@ -18,7 +18,8 @@ public final class AuthService {
     }
 
     public Optional<User> authenticate(String username, String password) throws SQLException {
-        if (username == null || username.isBlank() || username.length() > 50 || !passwords.acceptable(password)) {
+        if (username == null || username.isBlank() || username.length() > 50
+                || password == null || password.isBlank() || !passwords.acceptable(password)) {
             return Optional.empty();
         }
         Optional<UserDAO.Credentials> found = users.findByUsername(username.trim());

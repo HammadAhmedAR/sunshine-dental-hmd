@@ -32,7 +32,7 @@ class AppointmentServiceTest {
         when(treatments.findActiveById(connection, 2)).thenReturn(Optional.of(new Treatment(2, "Consultation", new BigDecimal("2000.00"), 20)));
         when(patients.insert(eq(connection), any())).thenReturn(5L);
         when(appointments.insert(connection, 5, 1, 2, 3, start, end))
-                .thenReturn(new Appointment(8, "SDC-8", 5, 1, 2, 3, start, end));
+                .thenReturn(new Appointment(8, "APT-2026-00008", 5, 1, 2, 3, start, end));
         service = new AppointmentService(() -> connection, patients, dentists, treatments, appointments,
                 new PatientService(null, patients), Clock.fixed(Instant.parse("2026-09-05T00:00:00Z"), ZoneOffset.UTC));
     }
@@ -51,7 +51,7 @@ class AppointmentServiceTest {
 
     @Test void validAppointmentCommitsPatientAndVisitTogether() throws Exception {
         Appointment saved = service.register(valid(), 3);
-        assertEquals("SDC-8", saved.appointmentNumber());
+        assertEquals("APT-2026-00008", saved.appointmentNumber());
         assertEquals(start, saved.startsAt());
         assertEquals(end, saved.endsAt());
         var order = inOrder(connection, dentists, appointments, patients);

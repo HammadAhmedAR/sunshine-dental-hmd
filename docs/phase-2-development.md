@@ -1,5 +1,7 @@
 # Phase 2 development evidence
 
+> Historical evidence from the initial Phase 2 implementation. For the revised reference format, current test count and connected Git remote, see [phase-2-report.md](phase-2-report.md).
+
 ## Outcome and boundary
 
 Implemented secure authentication foundation, sessions, dashboard statistics, patient/dentist/treatment reference data and appointment registration. Work stops at Phase 2. The user's Phase 1 runtime verification is accepted as prior context; the Phase 2 checks below were observed independently in this session.

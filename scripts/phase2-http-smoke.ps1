@@ -50,7 +50,7 @@ $fields.dentistId = '1'
 $saved = Send '/appointments/new' $fields
 Check ($saved.Status -eq 302) 'New patient appointment saves and redirects'
 $confirmation = Send '/dashboard' $null
-Check ($confirmation.Status -eq 200 -and $confirmation.Body -match 'Appointment SDC-[0-9]+ registered successfully') 'Confirmation displays database-generated reference'
+Check ($confirmation.Status -eq 200 -and $confirmation.Body -match 'Appointment APT-[0-9]{4}-[0-9]{5,} registered successfully') 'Confirmation displays database-generated reference'
 $duplicate = Send '/appointments/new' $fields
 Check ($duplicate.Status -eq 400 -and $duplicate.Body.Contains('already has an appointment')) 'Occupied dentist slot rejected'
 $fields.existingPatientId = '1'

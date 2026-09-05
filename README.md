@@ -11,7 +11,7 @@ mvn clean test
 mvn clean package
 ```
 
-Output: `target/sunrise-dental-clinic.war`. Both commands passed with 55 tests, no failures, errors or skips. GlassFish 7.1.0 and PostgreSQL 15 were also exercised in an isolated local fixture. See [Phase 2 evidence](docs/phase-2-development.md).
+Output: `target/sunrise-dental-clinic.war`. Both commands passed with 71 tests, no failures, errors or skips. GlassFish 7.1.0 and PostgreSQL 15 were also exercised in an isolated local fixture. See [current Phase 2 report](docs/phase-2-report.md).
 
 ## Database setup
 
@@ -26,10 +26,11 @@ For an **existing Phase 1 database**, run the migration once instead of schema.s
 
 ```powershell
 psql -U postgres -d sunrise_dental_clinic -v ON_ERROR_STOP=1 -f database/migrations/002_patient_address_and_booking_guard.sql
+psql -U postgres -d sunrise_dental_clinic -v ON_ERROR_STOP=1 -f database/migrations/003_appointment_reference_format.sql
 psql -U postgres -d sunrise_dental_clinic -v ON_ERROR_STOP=1 -f database/seed.sql
 ```
 
-No existing tables are dropped. Migration preserves legacy patient rows without inventing addresses. An administrator must backfill verified addresses and correct invalid old phone numbers before those records can be selected for a new appointment. After backfilling:
+If migration 002 was already applied during Phase 2, run only migration 003 before deploying this revised WAR. Fresh schema.sql installations need neither migration. No existing tables are dropped. Migration preserves legacy patient rows without inventing addresses. An administrator must backfill verified addresses and correct invalid old phone numbers before those records can be selected for a new appointment. After backfilling:
 
 ```sql
 ALTER TABLE patients VALIDATE CONSTRAINT patients_address_required;
@@ -92,19 +93,19 @@ Session timeout is 20 minutes. Cookies use HttpOnly and SameSite=Lax, with COOKI
 
 JSP -> Servlet -> Service -> DAO -> JDBC -> PostgreSQL. MVC, DAO and Service Layer patterns now have concrete implementations. DAO interfaces and constructor injection support unit tests with Mockito; no DI framework or artificial front controller is used. Services own validation and transaction boundaries; DAOs contain SQL. Domain records are immutable. JSP uses JSTL to escape displayed data.
 
-Patient selection reuses an existing foreign key; new patient creation and appointment insertion share one JDBC transaction. Dentist row locks serialise registration, the DAO checks time overlap, and a partial unique index independently prevents equal dentist/start slots. Treatment duration comes from PostgreSQL. All appointment dates/times are interpreted in Asia/Colombo. References retain the Phase 1 database-generated `SDC-<sequence>` format and are returned by INSERT RETURNING.
+Patient selection reuses an existing foreign key; new patient creation and appointment insertion share one JDBC transaction. Dentist row locks serialise registration, the DAO checks time overlap, and a partial unique index independently prevents equal dentist/start slots. Treatment duration comes from PostgreSQL. All appointment dates/times are interpreted in Asia/Colombo. New references use `APT-YYYY-NNNNN`; existing SDC references remain valid. The saved value is returned by INSERT RETURNING.
 
 Not implemented: appointment search/details, billing, reports, help content, dentist administration, advanced REST, GitHub Actions, final UML or final assignment report. Unimplemented navigation entries remain inactive.
 
 ## Evidence and Git
 
-- [Phase 2 development report](docs/phase-2-development.md)
+- [Phase 2 report](docs/phase-2-report.md)
 - [Test plan and genuine red/green evidence](docs/test-plan.md)
 - [Complete current source tree](docs/directory-tree.txt)
 - [New/modified/deleted files relative to Phase 1](docs/phase-2-changes.txt)
 - [Manual isolated-runtime verification instructions](scripts/README.md)
 
-The current checkout has no Git remote. Phase 2 commits are local and have not been pushed. The existing repository URL is required before origin can be configured. Phase 1's report is preserved as a historical record of that implementation session; it does not describe the current Phase 2 scope.
+The connected origin is https://github.com/HammadAhmedAR/sunshine-dental-hmd.git. Use git status -sb and git log to check current synchronisation. Phase 1's report is preserved as a historical record of that implementation session; it does not describe the current Phase 2 scope.
 
 # sunshine-dental-hmd
 JEE Application 

@@ -21,7 +21,7 @@
             <c:if test="${not referenceUnavailable}">
                 <form class="card" method="post" action="${pageContext.request.contextPath}/appointments/new">
                     <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                    <div class="form-group"><label for="appointmentNumber">Appointment number</label><input class="form-control" id="appointmentNumber" value="Assigned automatically when saved" readonly><p class="form-hint">The unique SDC reference will appear in your confirmation.</p></div>
+                    <div class="form-group"><label for="appointmentNumber">Appointment number</label><input class="form-control" id="appointmentNumber" value="Assigned automatically when saved" readonly><p class="form-hint">The unique APT reference will appear in your confirmation.</p></div>
                     <fieldset class="form-section">
                         <legend>01 &nbsp; Patient details</legend>
                         <div class="form-group">

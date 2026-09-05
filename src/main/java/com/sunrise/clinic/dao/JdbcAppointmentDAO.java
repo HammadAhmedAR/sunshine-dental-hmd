@@ -1,9 +1,11 @@
 package com.sunrise.clinic.dao;
 
 import com.sunrise.clinic.model.Appointment;
+import com.sunrise.clinic.util.AppointmentNumberGenerator;
 import org.postgresql.util.PSQLException;
 import java.sql.*;
 import java.time.Instant;
+import java.time.ZoneId;
 
 public final class JdbcAppointmentDAO implements AppointmentDAO {
     @Override
@@ -24,10 +26,17 @@ public final class JdbcAppointmentDAO implements AppointmentDAO {
     @Override
     public Appointment insert(Connection connection, long patientId, long dentistId, long treatmentId,
                               long createdBy, Instant start, Instant end) throws SQLException {
-        // Omit reference so PostgreSQL generates it. RETURNING retrieves the actual stored reference.
+        long sequence;
+        try (PreparedStatement next = connection.prepareStatement("SELECT nextval('appointment_reference_seq')");
+             ResultSet rows = next.executeQuery()) {
+            rows.next();
+            sequence = rows.getLong(1);
+        }
+        String reference = AppointmentNumberGenerator.generate(
+                start.atZone(ZoneId.of("Asia/Colombo")).toLocalDate(), sequence);
         String sql = """
-                INSERT INTO appointments(patient_id, dentist_id, treatment_id, created_by, starts_at, ends_at)
-                VALUES (?, ?, ?, ?, ?, ?) RETURNING appointment_id, appointment_number
+                INSERT INTO appointments(patient_id, dentist_id, treatment_id, created_by, starts_at, ends_at, appointment_number)
+                VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING appointment_id, appointment_number
                 """;
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, patientId);
@@ -36,6 +45,7 @@ public final class JdbcAppointmentDAO implements AppointmentDAO {
             statement.setLong(4, createdBy);
             statement.setTimestamp(5, Timestamp.from(start));
             statement.setTimestamp(6, Timestamp.from(end));
+            statement.setString(7, reference);
             try (ResultSet rows = statement.executeQuery()) {
                 rows.next();
                 return new Appointment(rows.getLong(1), rows.getString(2), patientId, dentistId,

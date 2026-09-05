@@ -85,7 +85,7 @@ class Phase2DatabaseCheck {
             check(wins == 1 && conflicts == 1, "Concurrent same-dentist bookings yield exactly one success and one conflict");
             check(count("patients") == patientsBefore + 1 && count("appointments") == appointmentsBefore + 1,
                     "Concurrent loser leaves no orphan patient");
-            check(saved.appointmentNumber().matches("SDC-[0-9]+"), "Database reference has SDC sequence format");
+            check(saved.appointmentNumber().matches("APT-[0-9]{4}-[0-9]{5,}"), "Database reference has APT year/sequence format");
 
             try {
                 service(DAO).register(request("Overlap Test Patient", "13:10"), 1);
