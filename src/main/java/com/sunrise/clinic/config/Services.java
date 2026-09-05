@@ -24,6 +24,10 @@ public final class Services {
     public DashboardService dashboard() {
         return new DashboardService(connections, new DashboardDAO(), java.time.Clock.systemUTC());
     }
+    public AppointmentService appointments() {
+        return new AppointmentService(connections, new JdbcPatientDAO(), new JdbcDentistDAO(),
+                new JdbcTreatmentDAO(), new JdbcAppointmentDAO(), patients(), java.time.Clock.systemUTC());
+    }
 
     public static Services get(ServletContext context) {
         synchronized (context) {

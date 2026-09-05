@@ -13,3 +13,4 @@ db.properties
 *.swp
 .DS_Store
 Thumbs.db
+.runtime/

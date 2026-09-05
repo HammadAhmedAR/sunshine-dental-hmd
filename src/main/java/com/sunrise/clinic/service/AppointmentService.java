@@ -49,7 +49,9 @@ public final class AppointmentService {
                         .orElseThrow(() -> new ValidationException("The selected treatment is unavailable."));
                 Instant end = start.plusSeconds(treatment.durationMinutes() * 60L);
                 rejectPast(start); // Recheck after waiting for the dentist lock.
-                // The conflict rule is introduced after the recorded red test.
+                if (appointments.hasOverlap(connection, dentistId, start, end)) {
+                    throw new ValidationException("This dentist already has an appointment during that time. Choose another slot.");
+                }
 
                 long patientId;
                 if (existingId != null) {
@@ -68,6 +70,9 @@ public final class AppointmentService {
                     connection.rollback();
                 } catch (SQLException rollbackFailure) {
                     exception.addSuppressed(rollbackFailure);
+                }
+                if (exception instanceof BookingConflictException) {
+                    throw new ValidationException("This dentist's slot was just booked. Choose another time.");
                 }
                 throw exception;
             }

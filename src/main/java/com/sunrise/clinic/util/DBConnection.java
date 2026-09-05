@@ -16,6 +16,12 @@ public final class DBConnection implements ConnectionProvider {
     }
 
     public Connection getConnection() throws SQLException {
+        // GlassFish may initialise DriverManager before it sees this WAR's driver.
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException exception) {
+            throw new SQLException("PostgreSQL JDBC driver is unavailable.", "08001", exception);
+        }
         Properties properties = new Properties();
         properties.setProperty("user", config.getUsername());
         properties.setProperty("password", config.getPassword());
