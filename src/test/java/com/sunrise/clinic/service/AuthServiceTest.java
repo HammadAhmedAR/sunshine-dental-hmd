@@ -4,6 +4,9 @@ import com.sunrise.clinic.dao.UserDAO;
 import com.sunrise.clinic.model.User;
 import com.sunrise.clinic.util.PasswordHasher;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,5 +44,21 @@ class AuthServiceTest {
     }
     @Test void malformedHashCannotAuthenticate() {
         assertFalse(HASHER.verify("test", "plaintext"));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "\t"})
+    void blankUsernameRejectedBeforeDao(String username) throws Exception {
+        assertTrue(service.authenticate(username, "SunriseLocal!2026").isEmpty());
+        verifyNoInteractions(users);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "\t"})
+    void blankPasswordRejectedBeforeDao(String password) throws Exception {
+        assertTrue(service.authenticate("sunrise.admin", password).isEmpty());
+        verifyNoInteractions(users);
     }
 }

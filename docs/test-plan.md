@@ -62,3 +62,7 @@ Separate observed runtime verification used isolated PostgreSQL 15 and GlassFish
 These counts are separate from JUnit, and the runtime fixture is reproducible using scripts/README.md. A runtime JDBC driver-loading issue was found and fixed before the final checks. Screenshots were viewed during browser inspection, but no image files have been added; the Phase 2 evidence document retains explicit capture placeholders. Phase 1's earlier 'not run' table above is historical; it is not the current Phase 2 status.
 
 Remaining checks are the actual user's deployment/migration, HTTPS/secure-cookie configuration, full idle timeout, broader browser/accessibility/load verification and assessment screenshot capture. There is no final assignment report or UML in this milestone.
+
+## Revised Phase 2 request: additional test-first checkpoint
+
+Existing double-booking RED/GREEN evidence remains intact in commit 38df028 and its subsequent implementation; it was not recreated. Before adding blank-password validation, the new targeted command `mvn -B "-Dtest=AuthServiceTest#blankPasswordRejectedBeforeDao" test` ran four cases with two genuine failures: whitespace-only passwords reached UserDAO. Null and empty inputs already passed. Output is preserved in `evidence/phase-2-blank-password-red.txt`. This checkpoint adds a previously missing validation rule rather than removing an implemented rule to manufacture a failure.
