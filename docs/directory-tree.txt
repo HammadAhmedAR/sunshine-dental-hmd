@@ -1,9 +1,11 @@
-﻿sunrise-dental-clinic/
+sunrise-dental-clinic/
     .gitignore
     database/
         migrations/
             002_patient_address_and_booking_guard.sql
             003_appointment_reference_format.sql
+            004_billing_snapshots_and_settings.sql
+            005_billing_revenue_view.sql
         schema.sql
         seed.sql
     docs/
@@ -22,10 +24,16 @@
             phase-2-revision-green.txt
             phase-2-tdd-green.txt
             phase-2-tdd-red.txt
+        final-development-audit.md
+        final-development-checklist.md
+        manual-runtime-verification.md
         phase-1-report.md
         phase-2-changes.txt
         phase-2-development.md
         phase-2-report.md
+        phase-3-report.md
+        requirements-traceability.md
+        screenshot-checklist.md
         test-plan.md
     LICENSE
     pom.xml
@@ -48,22 +56,33 @@
                                 SessionConfiguration.java
                             controller/
                                 AddAppointmentServlet.java
+                                AppointmentDetailsServlet.java
+                                AppointmentEditServlet.java
+                                AppointmentSearchServlet.java
+                                AppointmentStatusServlet.java
+                                BillingServlet.java
                                 DashboardServlet.java
+                                ErrorServlet.java
+                                HelpServlet.java
                                 LoginServlet.java
                                 LogoutServlet.java
                                 package-info.java
+                                ViewSupport.java
                             dao/
                                 AppointmentDAO.java
                                 BookingConflictException.java
                                 DashboardDAO.java
                                 DentistDAO.java
                                 JdbcAppointmentDAO.java
+                                JdbcBillDAO.java
                                 JdbcDentistDAO.java
                                 JdbcPatientDAO.java
+                                JdbcReportDAO.java
                                 JdbcTreatmentDAO.java
                                 JdbcUserDAO.java
                                 package-info.java
                                 PatientDAO.java
+                                ReportDAO.java
                                 TreatmentDAO.java
                                 UserDAO.java
                             filter/
@@ -71,8 +90,11 @@
                                 package-info.java
                             model/
                                 Appointment.java
+                                AppointmentDetails.java
                                 AppointmentRequest.java
-                                DashboardStats.java
+                                AppointmentSearchResult.java
+                                Bill.java
+                                BillCalculation.java
                                 Dentist.java
                                 package-info.java
                                 Patient.java
@@ -80,16 +102,25 @@
                                 Treatment.java
                                 User.java
                             rest/
+                                ApiExceptionMapper.java
+                                AppointmentResource.java
                                 HealthResource.java
                                 package-info.java
                                 RestApplication.java
                             service/
+                                AppointmentManagementService.java
+                                AppointmentQueryService.java
                                 AppointmentService.java
+                                AppointmentValidation.java
                                 AuthService.java
+                                BillService.java
                                 DashboardService.java
                                 DentistService.java
                                 package-info.java
                                 PatientService.java
+                                QueryValidation.java
+                                RecordNotFoundException.java
+                                ReportService.java
                                 TreatmentService.java
                                 ValidationException.java
                             util/
@@ -101,32 +132,41 @@
                                 PasswordHasher.java
                                 TestConnection.java
             resources/
-                db.properties.example
+                clinic.properties
             webapp/
                 assets/
                     css/
                         app.css
                         auth.css
+                        receipt.css
                     js/
                         appointment.js
+                        receipt.js
                 index.jsp
                 WEB-INF/
                     views/
                         appointments/
                             add-appointment.jsp
+                            details.jsp
+                            edit.jsp
+                            list.jsp
                         auth/
                             login.jsp
                         billing/
-                            .gitkeep
+                            generate.jsp
+                            history.jsp
+                            receipt.jsp
                         dashboard/
                             dashboard.jsp
+                        errors/
+                            error.jsp
                         fragments/
                             sidebar.jspf
                             topbar.jspf
                         help/
-                            .gitkeep
+                            help.jsp
                         reports/
-                            .gitkeep
+                            reports.jsp
                     web.xml
         test/
             java/
@@ -142,13 +182,14 @@
                             filter/
                                 AuthenticationFilterTest.java
                             service/
+                                AppointmentManagementServiceTest.java
+                                AppointmentQueryServiceTest.java
                                 AppointmentServiceTest.java
                                 AuthServiceTest.java
+                                BillServiceTest.java
                                 DashboardServiceTest.java
+                                Fixtures.java
                                 PatientServiceTest.java
+                                ReportServiceTest.java
                             util/
                                 AppointmentNumberGeneratorTest.java
-
-Generated WAR: target/sunrise-dental-clinic.war
-Generated test reports: target/surefire-reports/
-Excluded: target/, ignored .runtime/ fixture, and .git/ internals.

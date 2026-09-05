@@ -72,3 +72,39 @@ Existing double-booking RED/GREEN evidence remains intact in commit 38df028 and 
 The blank-password fix passed all four targeted cases, with the seven new reference tests also passing in the same run (11 total). Final `mvn -B clean test` and `mvn -B clean package` each passed 71 executions, zero failures/errors/skips. Current logs are `phase-2-revision-clean-test.txt` and `phase-2-revision-clean-package.txt`. The latest additions are eight blank-credential cases, seven reference-generator checks and one DAO/time-zone binding check (16 new executions).
 
 Migration 003 was applied to the isolated PostgreSQL fixture. A real registration saved APT-2026-00007 and existing SDC references remained intact; the outputs are in `phase-2-reference-migration.txt` and `phase-2-reference-check.txt`. Earlier 55-test and HTTP/browser logs remain historical, not re-labelled as results of this revision. The current completion record is [phase-2-report.md](phase-2-report.md).
+
+## Phase 3: Final Automated Test Audit & Verification Baseline
+
+As of 2026-09-05, the complete JUnit 5 automated test suite comprises **106 test executions** across 13 test classes.
+
+### Automated Test Suite Matrix
+
+| Test Class | Executions | Primary Coverage Area |
+|---|---:|---|
+| `DatabaseConfigTest` | 9 | DB configuration parameters, URL format, credential validation |
+| `AuthServiceTest` | 14 | Login authentication, BCrypt verification, UTF-8 bounds, inactive account rejection |
+| `AuthenticationFilterTest` | 7 | Path-based access control, public route bypass, unauthorized redirection |
+| `SessionServletTest` | 2 | Login/logout session invalidation and cookie security |
+| `PatientServiceTest` | 12 | Patient validation, Sri Lanka contact normalization (+94), address bounds |
+| `DashboardServiceTest` | 1 | Today/upcoming metrics aggregation across Sri Lanka time boundaries |
+| `AppointmentServiceTest` | 19 | Appointment validation, dentist slot locking, double-booking rejection, atomic commit/rollback |
+| `AppointmentNumberGeneratorTest` | 7 | Reference formatting (`APT-YYYY-NNNNN`), year boundary rollover, sequence bounds |
+| `JdbcAppointmentDAOTest` | 1 | DAO JDBC query parameter binding and object mapping |
+| `AppointmentQueryServiceTest` | 6 | Appointment search filters (reference, patient name, contact, status) |
+| `AppointmentManagementServiceTest` | 9 | Rescheduling, status transitions (COMPLETED, CANCELLED, NO_SHOW) |
+| `BillServiceTest` | 11 | Financial calculations (BigDecimal), consultation fee addition, duplicate billing rejection |
+| `ReportServiceTest` | 8 | Daily schedule reports, revenue aggregation, popular treatment tracking |
+| **Total Automated Executions** | **106** | **106 Passed, 0 Failures, 0 Errors, 0 Skipped** |
+
+### Execution Commands & Build Results
+
+- **Unit/Integration Test Command:** `mvn clean test`  
+  **Result:** `BUILD SUCCESS` (106 tests run, 0 failures, 0 errors, 0 skipped).
+
+- **WAR Package Command:** `mvn clean package`  
+  **Result:** `BUILD SUCCESS` (`target/sunrise-dental-clinic.war` successfully packaged).
+
+### Manual Runtime Verification
+
+Live runtime verification (PostgreSQL migration execution, GlassFish deployment, browser workflow walkthrough, receipt print preview, and screenshot capture) is deferred for manual execution per instructions. Step-by-step procedures are documented in [manual-runtime-verification.md](manual-runtime-verification.md) and [screenshot-checklist.md](screenshot-checklist.md).
+

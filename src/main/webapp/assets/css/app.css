@@ -18,7 +18,7 @@
 .form-section { border: 0; padding: 0; margin: 28px 0; min-width: 0; }
 .form-section legend { font-size: 19px; margin-bottom: 18px; font-weight: 600; }
 .form-hint { color: var(--muted); font-size: 12px; line-height: 1.6; }
-.form-actions { display: flex; gap: 20px; align-items: center; margin-top: 25px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-top: 25px; }
 .content > .message { margin: 20px 0; }
 @media (max-width: 760px) { .stats-grid, .form-grid { grid-template-columns: 1fr; } .action-panel { align-items: flex-start; flex-direction: column; } }
 /* Shared management views */
@@ -33,5 +33,6 @@ dt { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 dd { margin: 0; overflow-wrap: anywhere; }
 caption { text-align: left; font-weight: 600; margin-bottom: 18px; }
 .pagination { display: flex; gap: 24px; margin-top: 24px; }
+summary:focus-visible { outline: 3px solid #be781b; outline-offset: 4px; }
 @media(max-width:760px) { .details-grid { grid-template-columns: 1fr; } .filter-row > .form-group { width: 100%; } }
 .help-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.help-grid summary{cursor:pointer;font-weight:600;line-height:1.5}.help-grid p{line-height:1.8;color:var(--muted)}@media(max-width:760px){.help-grid{grid-template-columns:1fr}}
