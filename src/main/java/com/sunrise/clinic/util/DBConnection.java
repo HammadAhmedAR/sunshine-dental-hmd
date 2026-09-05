@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 /** Opens a fresh connection; callers must close it with try-with-resources. */
-public final class DBConnection {
+public final class DBConnection implements ConnectionProvider {
     private final DatabaseConfig config;
 
     public DBConnection(DatabaseConfig config) {
@@ -23,3 +23,4 @@ public final class DBConnection {
         return DriverManager.getConnection(config.getUrl(), properties);
     }
 }
+

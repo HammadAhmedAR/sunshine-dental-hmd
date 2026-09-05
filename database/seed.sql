@@ -1,11 +1,13 @@
 -- Fictional development data only. Prices are illustrative, not clinical quotes.
 -- Safe to rerun: conflicts on stable natural keys leave existing data untouched.
 BEGIN;
--- Disabled until a later authentication milestone provisions a real salted hash.
--- NULL means unprovisioned; there is no default/shared plaintext password.
+-- LOCAL DEVELOPMENT ONLY. Password is documented in README, never stored in the DB.
+-- Existing provisioned accounts are not reset when this script is rerun.
 INSERT INTO users (username, display_name, password_hash, role, is_active)
-VALUES ('sunrise.admin', 'Sunrise Administrator', NULL, 'ADMIN', FALSE)
-ON CONFLICT (username) DO NOTHING;
+VALUES ('sunrise.admin', 'Sunrise Administrator', '$2b$12$9TIJJGbuNDLMGFVbqSccI..NtN.Yfalx67KJfGfslFQoC/wXSE1g.', 'ADMIN', TRUE)
+ON CONFLICT (username) DO UPDATE
+SET password_hash = EXCLUDED.password_hash, is_active = TRUE
+WHERE users.password_hash IS NULL AND users.is_active = FALSE;
 
 INSERT INTO dentists (registration_number, full_name) VALUES
     ('DEMO-DENT-001', 'Dr. Nadeesha Perera'),
