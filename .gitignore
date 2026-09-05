@@ -1,0 +1,15 @@
+target/
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+nbproject/private/
+db.properties
+.env
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db

@@ -1,0 +1,16 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" aria-label="Clinic navigation">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">S+</span><span>sunrise<small>DENTAL CLINIC</small></span></a>
+    <p class="nav-label">WORKSPACE</p>
+    <nav>
+        <a class="nav-item active" href="./" aria-current="page">Welcome <span aria-hidden="true">&#8599;</span></a>
+        <span class="nav-item" aria-disabled="true">Dashboard</span>
+        <span class="nav-item" aria-disabled="true">Appointments</span>
+        <span class="nav-item" aria-disabled="true">New Appointment</span>
+        <span class="nav-item" aria-disabled="true">Billing</span>
+        <span class="nav-item" aria-disabled="true">Reports</span>
+        <span class="nav-item" aria-disabled="true">Help</span>
+        <span class="nav-item" aria-disabled="true">Logout</span>
+    </nav>
+    <div class="sidebar-note"><span class="status-dot" aria-hidden="true"></span> Phase 1 foundation<small>Workspace modules coming soon</small></div>
+</aside>
