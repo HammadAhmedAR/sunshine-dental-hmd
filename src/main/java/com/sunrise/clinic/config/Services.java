@@ -35,6 +35,10 @@ public final class Services {
         return new AppointmentManagementService(connections, new JdbcAppointmentDAO(), new JdbcDentistDAO(),
                 new JdbcTreatmentDAO(), java.time.Clock.systemUTC());
     }
+    public BillService bills() {
+        return new BillService(connections, new JdbcAppointmentDAO(), new JdbcBillDAO(), java.time.Clock.systemUTC());
+    }
+    public ReportService reports() { return new ReportService(connections, new JdbcReportDAO()); }
 
     public static Services get(ServletContext context) {
         synchronized (context) {
