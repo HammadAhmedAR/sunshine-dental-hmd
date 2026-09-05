@@ -12,10 +12,10 @@
             </c:when>
             <c:otherwise><a class="nav-item active" href="${pageContext.request.contextPath}/login">Staff sign-in</a></c:otherwise>
         </c:choose>
-        <span class="nav-item" aria-disabled="true">Billing</span>
-        <span class="nav-item" aria-disabled="true">Reports</span>
-        <span class="nav-item" aria-disabled="true">Help</span>
         <c:if test="${not empty sessionScope.loggedUser}">
+            <a class="nav-item ${activePage == 'billing' ? 'active' : ''}" href="${pageContext.request.contextPath}/billing">Billing</a>
+            <a class="nav-item ${activePage == 'reports' ? 'active' : ''}" href="${pageContext.request.contextPath}/reports">Reports</a>
+            <a class="nav-item ${activePage == 'help' ? 'active' : ''}" href="${pageContext.request.contextPath}/help">Help</a>
             <form method="post" action="${pageContext.request.contextPath}/logout">
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                 <button class="nav-item logout-button" type="submit">Logout</button>

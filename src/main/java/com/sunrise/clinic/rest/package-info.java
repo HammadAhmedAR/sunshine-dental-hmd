@@ -1,2 +1,2 @@
-/** JAX-RS resources. Implementations are introduced only when needed. */
+/** JAX-RS liveness and authenticated appointment resources. */
 package com.sunrise.clinic.rest;

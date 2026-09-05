@@ -64,6 +64,18 @@ class AuthenticationFilterTest {
         filter.doFilter(request, response, chain);
         verify(response).sendError(403, "Your form expired. Reload the page and try again.");
     }
+    @Test void anonymousApiReturnsJson401WithoutRedirect() throws Exception {
+        when(request.getServletPath()).thenReturn("/api");
+        when(request.getPathInfo()).thenReturn("/appointments/APT-2026-00001");
+        java.io.StringWriter body = new java.io.StringWriter();
+        when(response.getWriter()).thenReturn(new java.io.PrintWriter(body));
+        filter.doFilter(request, response, chain);
+        verify(response).setStatus(401);
+        verify(response, never()).sendRedirect(anyString());
+        verify(response).setHeader("Cache-Control", "no-store");
+        org.junit.jupiter.api.Assertions.assertTrue(body.toString().contains("Authentication required"));
+        verifyNoInteractions(chain);
+    }
     private HttpSession signedInSession() {
         HttpSession session = mock(HttpSession.class);
         when(request.getServletPath()).thenReturn("/appointments/new");

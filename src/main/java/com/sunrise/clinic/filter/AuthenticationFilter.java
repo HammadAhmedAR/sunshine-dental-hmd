@@ -25,12 +25,14 @@ public class AuthenticationFilter implements Filter {
         boolean publicPath = path.equals("/") || path.isEmpty() || path.equals("/index.jsp")
                 || path.equals("/login") || path.equals("/api/health") || path.startsWith("/assets/");
         HttpSession session = req.getSession(false);
+        if (!path.startsWith("/assets/")) res.setHeader("Cache-Control", "no-store");
         if (!publicPath && (session == null || !(session.getAttribute("loggedUser") instanceof User))) {
-            res.sendRedirect(req.getContextPath() + "/login");
+            if (path.startsWith("/api/")) {
+                res.setStatus(401);
+                res.setContentType("application/json;charset=UTF-8");
+                res.getWriter().write("{\"error\":\"Authentication required.\"}");
+            } else res.sendRedirect(req.getContextPath() + "/login");
             return;
-        }
-        if (!path.startsWith("/assets/")) {
-            res.setHeader("Cache-Control", "no-store");
         }
         if (path.equals("/login") || !publicPath) {
             Csrf.token(req.getSession());

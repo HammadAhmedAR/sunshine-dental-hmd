@@ -34,11 +34,11 @@
                     <p class="access-footnote">For authorised Sunrise Dental Clinic staff.</p>
                 </section>
             </section>
-            <section class="foundation-strip" aria-label="Planned workspace features">
+            <section class="foundation-strip" aria-label="Workspace features">
                 <div><span class="feature-number">01</span><h2>Patient visits</h2><p>Appointment planning</p></div>
                 <div><span class="feature-number">02</span><h2>Clear billing</h2><p>Treatment costs in LKR</p></div>
                 <div><span class="feature-number">03</span><h2>Clinic insights</h2><p>Useful operational reports</p></div>
-                <p class="planned-note">Planned for later milestones</p>
+                <p class="planned-note">One workspace for your clinic day</p>
             </section>
             <footer>Sunrise Dental Clinic <span>Care, with clarity.</span></footer>
         </main>

@@ -1,0 +1,20 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staff help | Sunrise Dental Clinic</title><link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/app.css"></head>
+<body><div class="app-shell"><%@ include file="../fragments/sidebar.jspf" %><div class="workspace"><%@ include file="../fragments/topbar.jspf" %>
+<main id="main-content" class="content"><h1 class="page-title">Staff help</h1>
+<c:if test="${not empty success}"><div class="message message-success" role="status"><c:out value="${success}"/></div></c:if>
+<c:if test="${not empty error}"><div class="message message-error" role="alert"><c:out value="${error}"/></div></c:if>
+<p class="page-intro">A quick guide to everyday clinic work. All visit and bill times use Sri Lanka time.</p><div class="help-grid"><details class="card"><summary>01 · Logging in</summary><p>Open Staff sign-in, enter your username and password, then select Sign in. If sign-in fails, check both fields; the error deliberately does not identify which is incorrect.</p></details>
+<details class="card"><summary>02 · Registering an appointment</summary><p>Choose New Appointment. Select an existing patient or enter the patient's name, address and Sri Lankan contact number. Select dentist, treatment, date and time, then register. Keep the generated appointment number.</p></details>
+<details class="card"><summary>03 · Searching and viewing</summary><p>Choose Appointments. Enter the complete APT or legacy SDC appointment number in the search box. You can also filter the appointment list by date/status and select View.</p></details>
+<details class="card"><summary>04 · Editing / rescheduling</summary><p>Open a booked appointment and select Reschedule. Change dentist, treatment or visit time and save. The appointment number and patient details stay unchanged. Past and overlapping times are rejected. Billed or final-status visits cannot be edited.</p></details>
+<details class="card"><summary>05 · Cancelling an appointment</summary><p>Open appointment details, select CANCELLED under Update appointment status and submit. A cancelled visit remains in the record. Cancellation is final and is blocked after billing.</p></details>
+<details class="card"><summary>06 · Completing a visit</summary><p>After the visit has started, open details and select COMPLETED. For an unattended visit, use NO_SHOW after its start. Final statuses cannot be reopened.</p></details>
+<details class="card"><summary>07 · Generating a bill</summary><p>From appointment details, choose Generate bill. Review treatment cost, consultation fee and total, then Generate final bill. Fees are rechecked at that moment. One final bill is allowed per visit; cancelled/no-show visits cannot be billed.</p></details>
+<details class="card"><summary>08 · Printing a receipt</summary><p>Open a receipt from appointment details or Billing history, then choose Print receipt. Review your browser's print preview, choose the printer or Save as PDF, and print. Navigation and buttons are excluded from print.</p></details>
+<details class="card"><summary>09 · Viewing reports</summary><p>Choose Reports. Select a date for the full daily schedule, or an inclusive date range up to 366 days for issued billing revenue. Revenue describes billed charges, not collected payments.</p></details>
+<details class="card"><summary>10 · Logging out</summary><p>Use Logout in the sidebar when finished. Sessions expire after 20 minutes without activity. Reload a form if its security token expires.</p></details>
+<details class="card"><summary>11 · Troubleshooting</summary><p>For a missing appointment, check the full number. For a conflict, choose a free time or dentist. If clinic data is unavailable, contact the administrator; avoid repeatedly submitting a bill or booking whose result is uncertain.</p></details></div>
+</main></div></div></body></html>

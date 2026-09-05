@@ -5,4 +5,9 @@
         <cookie-config><http-only>true</http-only></cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
+    <error-page><error-code>403</error-code><location>/error</location></error-page>
+    <error-page><error-code>404</error-code><location>/error</location></error-page>
+    <error-page><error-code>405</error-code><location>/error</location></error-page>
+    <error-page><error-code>500</error-code><location>/error</location></error-page>
+    <error-page><exception-type>java.lang.Throwable</exception-type><location>/error</location></error-page>
 </web-app>

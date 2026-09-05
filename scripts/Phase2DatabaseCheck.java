@@ -47,6 +47,11 @@ class Phase2DatabaseCheck {
         check(patientsBefore == 1 && appointmentsBefore == 2, "HTTP conflict/reuse fixture has one patient and two appointments");
 
         AppointmentDAO failAfterBothInserts = new AppointmentDAO() {
+            public Optional<AppointmentDetails> findByReference(Connection c, String n, boolean lock) throws SQLException { return DAO.findByReference(c,n,lock); }
+            public List<AppointmentDetails> list(Connection c, LocalDate d, AppointmentStatus s, int limit, int offset) throws SQLException { return DAO.list(c,d,s,limit,offset); }
+            public boolean hasOverlapExcluding(Connection c, long id, Instant start, Instant end, long excluded) throws SQLException { return DAO.hasOverlapExcluding(c,id,start,end,excluded); }
+            public void reschedule(Connection c, long id, long d, long t, Instant start, Instant end) throws SQLException { DAO.reschedule(c,id,d,t,start,end); }
+            public void changeStatus(Connection c, long id, AppointmentStatus s) throws SQLException { DAO.changeStatus(c,id,s); }
             public boolean hasOverlap(Connection c, long id, Instant start, Instant end) throws SQLException {
                 return DAO.hasOverlap(c, id, start, end);
             }
